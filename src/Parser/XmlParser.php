@@ -204,20 +204,13 @@ class XmlParser
     private function newPhpObject(\stdClass $meta)
     {
         $phpTypes = explode('|', $meta->phpType);
+        $simpleProperties = ['integer', 'string', 'double', 'boolean', 'DateTime'];
 
         foreach ($phpTypes as $phpType) {
-            switch ($phpType) {
-                case 'integer':
-                case 'string':
-                case 'double':
-                case 'boolean':
-                case 'DateTime':
-                    continue;
-                default:
-                    return $meta->phpType !== '' ? new $phpType() : null;
+            if (!in_array($phpType, $simpleProperties)) {
+                return $meta->phpType !== '' ? new $phpType() : null;
             }
         }
-
         return null;
     }
 
@@ -250,20 +243,13 @@ class XmlParser
     private function isSimplePhpType(\stdClass $meta)
     {
         $phpTypes = explode('|', $meta->phpType);
+        $simpleProperties = ['integer', 'string', 'double', 'boolean', 'DateTime'];
 
         foreach ($phpTypes as $phpType) {
-            switch ($phpType) {
-                case 'integer':
-                case 'string':
-                case 'double':
-                case 'boolean':
-                case 'DateTime':
-                    continue;
-                default:
-                    return false;
+            if (!in_array($phpType, $simpleProperties)) {
+                return false;
             }
         }
-
         return true;
     }
 
